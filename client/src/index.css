@@ -1,3 +1,5 @@
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
 @import "tailwindcss";
 @import "tw-animate-css";
 
@@ -32,94 +34,57 @@
   --color-chart-3: var(--chart-3);
   --color-chart-4: var(--chart-4);
   --color-chart-5: var(--chart-5);
-  --color-sidebar: var(--sidebar);
-  --color-sidebar-foreground: var(--sidebar-foreground);
-  --color-sidebar-primary: var(--sidebar-primary);
-  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
-  --color-sidebar-accent: var(--sidebar-accent);
-  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
-  --color-sidebar-border: var(--sidebar-border);
-  --color-sidebar-ring: var(--sidebar-ring);
+  --font-sans: 'Space Grotesk', system-ui, sans-serif;
+  --font-mono: 'Space Mono', monospace;
+  --font-display: 'Bebas Neue', 'Space Grotesk', sans-serif;
 }
 
 :root {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-600);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --radius: 0.65rem;
-  --background: oklch(1 0 0);
-  --foreground: oklch(0.235 0.015 65);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.235 0.015 65);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.235 0.015 65);
-  --secondary: oklch(0.98 0.001 286.375);
-  --secondary-foreground: oklch(0.4 0.015 65);
-  --muted: oklch(0.967 0.001 286.375);
-  --muted-foreground: oklch(0.552 0.016 285.938);
-  --accent: oklch(0.967 0.001 286.375);
-  --accent-foreground: oklch(0.141 0.005 285.823);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(0.92 0.004 286.32);
-  --input: oklch(0.92 0.004 286.32);
-  --ring: oklch(0.623 0.214 259.815);
-  --sidebar: oklch(0.985 0 0);
-  --sidebar-foreground: oklch(0.235 0.015 65);
-  --sidebar-accent: oklch(0.967 0.001 286.375);
-  --sidebar-accent-foreground: oklch(0.141 0.005 285.823);
-  --sidebar-border: oklch(0.92 0.004 286.32);
-  --sidebar-ring: oklch(0.623 0.214 259.815);
+  --radius: 0.25rem;
+  --background: oklch(0.08 0.005 260);
+  --foreground: oklch(0.95 0.005 260);
+  --card: oklch(0.11 0.008 260);
+  --card-foreground: oklch(0.95 0.005 260);
+  --popover: oklch(0.10 0.008 260);
+  --popover-foreground: oklch(0.95 0.005 260);
+  --primary: oklch(0.85 0.22 195);
+  --primary-foreground: oklch(0.08 0.005 260);
+  --secondary: oklch(0.15 0.01 260);
+  --secondary-foreground: oklch(0.85 0.005 260);
+  --muted: oklch(0.14 0.008 260);
+  --muted-foreground: oklch(0.55 0.01 260);
+  --accent: oklch(0.60 0.28 25);
+  --accent-foreground: oklch(0.98 0.005 260);
+  --destructive: oklch(0.55 0.25 25);
+  --destructive-foreground: oklch(0.98 0.005 260);
+  --border: oklch(0.20 0.01 260);
+  --input: oklch(0.14 0.008 260);
+  --ring: oklch(0.85 0.22 195);
+  --chart-1: oklch(0.85 0.22 195);
+  --chart-2: oklch(0.60 0.28 25);
+  --chart-3: oklch(0.75 0.18 140);
+  --chart-4: oklch(0.70 0.20 310);
+  --chart-5: oklch(0.80 0.15 60);
 }
 
-.dark {
-  --primary: var(--color-blue-700);
-  --primary-foreground: var(--color-blue-50);
-  --sidebar-primary: var(--color-blue-500);
-  --sidebar-primary-foreground: var(--color-blue-50);
-  --background: oklch(0.141 0.005 285.823);
-  --foreground: oklch(0.85 0.005 65);
-  --card: oklch(0.21 0.006 285.885);
-  --card-foreground: oklch(0.85 0.005 65);
-  --popover: oklch(0.21 0.006 285.885);
-  --popover-foreground: oklch(0.85 0.005 65);
-  --secondary: oklch(0.24 0.006 286.033);
-  --secondary-foreground: oklch(0.7 0.005 65);
-  --muted: oklch(0.274 0.006 286.033);
-  --muted-foreground: oklch(0.705 0.015 286.067);
-  --accent: oklch(0.274 0.006 286.033);
-  --accent-foreground:  oklch(0.92 0.005 65);
-  --destructive: oklch(0.704 0.191 22.216);
-  --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.488 0.243 264.376);
-  --chart-1: var(--color-blue-300);
-  --chart-2: var(--color-blue-500);
-  --chart-3: var(--color-blue-600);
-  --chart-4: var(--color-blue-700);
-  --chart-5: var(--color-blue-800);
-  --sidebar: oklch(0.21 0.006 285.885);
-  --sidebar-foreground: oklch(0.85 0.005 65);
-  --sidebar-accent: oklch(0.274 0.006 286.033);
-  --sidebar-accent-foreground:  oklch(0.985 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.488 0.243 264.376);
-}
+
 
 @layer base {
-  * {
-    @apply border-border outline-ring/50;
-  }
+  * { @apply border-border outline-ring/50; }
+  html { @apply scroll-smooth; }
   body {
-    @apply bg-background text-foreground;
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Space Grotesk', system-ui, sans-serif;
+    background-image:
+      radial-gradient(ellipse at 20% 50%, oklch(0.85 0.22 195 / 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, oklch(0.60 0.28 25 / 0.03) 0%, transparent 40%);
   }
+  h1, h2, h3, h4, h5, h6 {
+    font-family: 'Bebas Neue', 'Space Grotesk', sans-serif;
+    letter-spacing: 0.05em;
+  }
+  code, pre { font-family: 'Space Mono', monospace; }
+  ::selection { background: oklch(0.85 0.22 195 / 0.3); color: oklch(0.98 0.005 260); }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled),
@@ -134,19 +99,71 @@
 }
 
 @layer components {
-  /**
-   * Custom container utility that centers content and adds responsive padding.
-   *
-   * This overrides Tailwind's default container behavior to:
-   * - Auto-center content (mx-auto)
-   * - Add responsive horizontal padding
-   * - Set max-width for large screens
-   *
-   * Usage: <div className="container">...</div>
-   *
-   * For custom widths, use max-w-* utilities directly:
-   * <div className="max-w-6xl mx-auto px-4">...</div>
-   */
+  /* Glitch Effect */
+  .glitch {
+    position: relative;
+    display: inline-block;
+    text-shadow: 2px 0 0 oklch(0.55 0.28 25 / 0.55), -2px 0 0 oklch(0.85 0.22 195 / 0.35);
+  }
+  .glitch::before, .glitch::after {
+    content: attr(data-text);
+    position: absolute; top: 0; left: 0;
+    width: 100%; height: 100%;
+    pointer-events: none;
+    overflow: hidden;
+  }
+  .glitch::before {
+    color: oklch(0.85 0.22 195);
+    animation: glitch-cyan 2.8s infinite;
+    clip-path: polygon(0 0%, 100% 0%, 100% 35%, 0 35%);
+    left: -3px;
+    text-shadow: none;
+  }
+  .glitch::after {
+    color: oklch(0.62 0.28 25);
+    animation: glitch-red 2.8s infinite;
+    clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
+    left: 3px;
+    text-shadow: none;
+  }
+  @keyframes glitch-cyan {
+    0%   { transform: translate(0,0) skewX(0deg); opacity: 0; }
+    8%   { transform: translate(-6px,-2px) skewX(-4deg); opacity: 1; clip-path: polygon(0 5%,100% 5%,100% 30%,0 30%); }
+    10%  { transform: translate(4px,1px) skewX(2deg); opacity: 1; clip-path: polygon(0 10%,100% 10%,100% 40%,0 40%); }
+    12%  { transform: translate(0,0); opacity: 0; }
+    38%  { transform: translate(-8px,0) skewX(-6deg); opacity: 1; clip-path: polygon(0 15%,100% 15%,100% 35%,0 35%); }
+    40%  { transform: translate(5px,-1px) skewX(3deg); opacity: 1; clip-path: polygon(0 0%,100% 0%,100% 25%,0 25%); }
+    42%  { transform: translate(0,0); opacity: 0; }
+    100% { transform: translate(0,0); opacity: 0; }
+  }
+  @keyframes glitch-red {
+    0%   { transform: translate(0,0) skewX(0deg); opacity: 0; }
+    8%   { transform: translate(6px,2px) skewX(4deg); opacity: 1; clip-path: polygon(0 60%,100% 60%,100% 90%,0 90%); }
+    10%  { transform: translate(-4px,-1px) skewX(-2deg); opacity: 1; clip-path: polygon(0 65%,100% 65%,100% 100%,0 100%); }
+    12%  { transform: translate(0,0); opacity: 0; }
+    38%  { transform: translate(8px,0) skewX(6deg); opacity: 1; clip-path: polygon(0 70%,100% 70%,100% 95%,0 95%); }
+    40%  { transform: translate(-5px,1px) skewX(-3deg); opacity: 1; clip-path: polygon(0 55%,100% 55%,100% 80%,0 80%); }
+    42%  { transform: translate(0,0); opacity: 0; }
+    100% { transform: translate(0,0); opacity: 0; }
+  }
+  /* Verdict Badges */
+  .verdict-false { background: oklch(0.55 0.25 25 / 0.2); color: oklch(0.75 0.25 25); border: 1px solid oklch(0.55 0.25 25 / 0.4); padding: 0.125rem 0.5rem; border-radius: 2px; font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .verdict-misleading { background: oklch(0.70 0.20 60 / 0.15); color: oklch(0.82 0.18 60); border: 1px solid oklch(0.70 0.20 60 / 0.4); padding: 0.125rem 0.5rem; border-radius: 2px; font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .verdict-missing-context { background: oklch(0.65 0.18 220 / 0.15); color: oklch(0.78 0.16 220); border: 1px solid oklch(0.65 0.18 220 / 0.4); padding: 0.125rem 0.5rem; border-radius: 2px; font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .verdict-true { background: oklch(0.65 0.18 145 / 0.15); color: oklch(0.78 0.18 145); border: 1px solid oklch(0.65 0.18 145 / 0.4); padding: 0.125rem 0.5rem; border-radius: 2px; font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
+  .section-divider { border: none; border-top: 1px solid oklch(0.20 0.01 260); }
+  .badge-bronze { color: oklch(0.72 0.12 50); border-color: oklch(0.72 0.12 50 / 0.4); }
+  .badge-silver { color: oklch(0.80 0.02 260); border-color: oklch(0.80 0.02 260 / 0.4); }
+  .badge-gold { color: oklch(0.85 0.18 85); border-color: oklch(0.85 0.18 85 / 0.4); }
+  .badge-platinum { color: oklch(0.85 0.22 195); border-color: oklch(0.85 0.22 195 / 0.4); }
+  @keyframes pulse-cyan {
+    0%, 100% { box-shadow: 0 0 0 0 oklch(0.85 0.22 195 / 0.4); }
+    50% { box-shadow: 0 0 0 8px oklch(0.85 0.22 195 / 0); }
+  }
+  .pulse-cyan { animation: pulse-cyan 2s ease-in-out infinite; }
+  @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+  .ticker-track { animation: ticker 30s linear infinite; }
+  .ticker-track:hover { animation-play-state: paused; }
   .container {
     width: 100%;
     margin-left: auto;
