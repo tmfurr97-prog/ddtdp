@@ -41,30 +41,30 @@
 
 :root {
   --radius: 0.25rem;
-  --background: oklch(0.98 0.005 260);
-  --foreground: oklch(0.15 0.005 260);
-  --card: oklch(0.95 0.008 260);
-  --card-foreground: oklch(0.15 0.005 260);
-  --popover: oklch(0.92 0.008 260);
-  --popover-foreground: oklch(0.15 0.005 260);
-  --primary: oklch(0.50 0.28 25);
-  --primary-foreground: oklch(0.98 0.005 260);
-  --secondary: oklch(0.90 0.01 260);
-  --secondary-foreground: oklch(0.15 0.005 260);
-  --muted: oklch(0.70 0.008 260);
-  --muted-foreground: oklch(0.45 0.01 260);
-  --accent: oklch(0.50 0.28 195);
+  --background: oklch(0.08 0.005 260);
+  --foreground: oklch(0.95 0.005 260);
+  --card: oklch(0.11 0.008 260);
+  --card-foreground: oklch(0.95 0.005 260);
+  --popover: oklch(0.10 0.008 260);
+  --popover-foreground: oklch(0.95 0.005 260);
+  --primary: oklch(0.85 0.22 195);
+  --primary-foreground: oklch(0.08 0.005 260);
+  --secondary: oklch(0.15 0.01 260);
+  --secondary-foreground: oklch(0.85 0.005 260);
+  --muted: oklch(0.14 0.008 260);
+  --muted-foreground: oklch(0.55 0.01 260);
+  --accent: oklch(0.60 0.28 25);
   --accent-foreground: oklch(0.98 0.005 260);
   --destructive: oklch(0.55 0.25 25);
   --destructive-foreground: oklch(0.98 0.005 260);
-  --border: oklch(0.85 0.01 260);
-  --input: oklch(0.92 0.008 260);
-  --ring: oklch(0.50 0.28 195);
-  --chart-1: oklch(0.50 0.28 195);
-  --chart-2: oklch(0.50 0.28 25);
-  --chart-3: oklch(0.55 0.18 140);
-  --chart-4: oklch(0.50 0.20 310);
-  --chart-5: oklch(0.60 0.15 60);
+  --border: oklch(0.20 0.01 260);
+  --input: oklch(0.14 0.008 260);
+  --ring: oklch(0.85 0.22 195);
+  --chart-1: oklch(0.85 0.22 195);
+  --chart-2: oklch(0.60 0.28 25);
+  --chart-3: oklch(0.75 0.18 140);
+  --chart-4: oklch(0.70 0.20 310);
+  --chart-5: oklch(0.80 0.15 60);
 }
 
 
@@ -76,15 +76,15 @@
     @apply bg-background text-foreground antialiased;
     font-family: 'Space Grotesk', system-ui, sans-serif;
     background-image:
-      radial-gradient(ellipse at 20% 50%, oklch(0.50 0.28 195 / 0.02) 0%, transparent 50%),
-      radial-gradient(ellipse at 80% 20%, oklch(0.50 0.28 25 / 0.02) 0%, transparent 40%);
+      radial-gradient(ellipse at 20% 50%, oklch(0.85 0.22 195 / 0.04) 0%, transparent 50%),
+      radial-gradient(ellipse at 80% 20%, oklch(0.60 0.28 25 / 0.03) 0%, transparent 40%);
   }
   h1, h2, h3, h4, h5, h6 {
     font-family: 'Bebas Neue', 'Space Grotesk', sans-serif;
     letter-spacing: 0.05em;
   }
   code, pre { font-family: 'Space Mono', monospace; }
-  ::selection { background: oklch(0.50 0.28 195 / 0.3); color: oklch(0.15 0.005 260); }
+  ::selection { background: oklch(0.85 0.22 195 / 0.3); color: oklch(0.98 0.005 260); }
   button:not(:disabled),
   [role="button"]:not([aria-disabled="true"]),
   [type="button"]:not(:disabled),
@@ -103,7 +103,7 @@
   .glitch {
     position: relative;
     display: inline-block;
-    text-shadow: 2px 0 0 oklch(0.55 0.28 25 / 0.7), -2px 0 0 oklch(0.50 0.28 195 / 0.5);
+    text-shadow: 2px 0 0 oklch(0.55 0.28 25 / 0.55), -2px 0 0 oklch(0.85 0.22 195 / 0.35);
   }
   .glitch::before, .glitch::after {
     content: attr(data-text);
@@ -113,14 +113,14 @@
     overflow: hidden;
   }
   .glitch::before {
-    color: oklch(0.50 0.28 195);
+    color: oklch(0.85 0.22 195);
     animation: glitch-cyan 2.8s infinite;
     clip-path: polygon(0 0%, 100% 0%, 100% 35%, 0 35%);
     left: -3px;
     text-shadow: none;
   }
   .glitch::after {
-    color: oklch(0.55 0.28 25);
+    color: oklch(0.62 0.28 25);
     animation: glitch-red 2.8s infinite;
     clip-path: polygon(0 55%, 100% 55%, 100% 100%, 0 100%);
     left: 3px;
@@ -151,14 +151,14 @@
   .verdict-misleading { background: oklch(0.70 0.20 60 / 0.15); color: oklch(0.82 0.18 60); border: 1px solid oklch(0.70 0.20 60 / 0.4); padding: 0.125rem 0.5rem; border-radius: 2px; font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
   .verdict-missing-context { background: oklch(0.65 0.18 220 / 0.15); color: oklch(0.78 0.16 220); border: 1px solid oklch(0.65 0.18 220 / 0.4); padding: 0.125rem 0.5rem; border-radius: 2px; font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
   .verdict-true { background: oklch(0.65 0.18 145 / 0.15); color: oklch(0.78 0.18 145); border: 1px solid oklch(0.65 0.18 145 / 0.4); padding: 0.125rem 0.5rem; border-radius: 2px; font-family: 'Space Mono', monospace; font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; }
-  .section-divider { border: none; border-top: 1px solid oklch(0.85 0.01 260); }
+  .section-divider { border: none; border-top: 1px solid oklch(0.20 0.01 260); }
   .badge-bronze { color: oklch(0.72 0.12 50); border-color: oklch(0.72 0.12 50 / 0.4); }
   .badge-silver { color: oklch(0.80 0.02 260); border-color: oklch(0.80 0.02 260 / 0.4); }
   .badge-gold { color: oklch(0.85 0.18 85); border-color: oklch(0.85 0.18 85 / 0.4); }
-  .badge-platinum { color: oklch(0.50 0.28 195); border-color: oklch(0.50 0.28 195 / 0.4); }
+  .badge-platinum { color: oklch(0.85 0.22 195); border-color: oklch(0.85 0.22 195 / 0.4); }
   @keyframes pulse-cyan {
-    0%, 100% { box-shadow: 0 0 0 0 oklch(0.50 0.28 195 / 0.4); }
-    50% { box-shadow: 0 0 0 8px oklch(0.50 0.28 195 / 0); }
+    0%, 100% { box-shadow: 0 0 0 0 oklch(0.85 0.22 195 / 0.4); }
+    50% { box-shadow: 0 0 0 8px oklch(0.85 0.22 195 / 0); }
   }
   .pulse-cyan { animation: pulse-cyan 2s ease-in-out infinite; }
   @keyframes ticker { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
