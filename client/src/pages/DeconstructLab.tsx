@@ -34,14 +34,14 @@ const PLACEHOLDER_HOAXES = [
 export default function DeconstructLab() {
   const [category, setCategory] = useState<string | undefined>(undefined);
   const [showForm, setShowForm] = useState(false);
-  const [form, setForm] = useState({ title: "", description: "", sourceUrl: "", category: "" });
+  const [form, setForm] = useState({ title: "", description: "", sourceUrl: "" });
 
-  const { data: hoaxes, isLoading } = trpc.hoaxes.list.useQuery({ limit: 20, offset: 0, category });
+  const { data: hoaxes, isLoading } = trpc.hoaxes.list.useQuery({ limit: 20, offset: 0 });
   const submit = trpc.submissions.submit.useMutation({
     onSuccess: () => {
       toast.success("Tip submitted! Our team will review it.");
       setShowForm(false);
-      setForm({ title: "", description: "", sourceUrl: "", category: "" });
+      setForm({ title: "", description: "", sourceUrl: "" });
     },
     onError: (err) => toast.error(err.message),
   });
@@ -163,17 +163,7 @@ export default function DeconstructLab() {
                       className="w-full bg-background border border-border/50 rounded-sm px-4 py-2.5 text-sm font-mono text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-primary/50 transition-colors"
                     />
                   </div>
-                  <div>
-                    <label className="text-xs font-mono tracking-widest uppercase text-muted-foreground block mb-2">Category</label>
-                    <select
-                      value={form.category}
-                      onChange={(e) => setForm({ ...form, category: e.target.value })}
-                      className="w-full bg-background border border-border/50 rounded-sm px-4 py-2.5 text-sm font-mono text-foreground focus:outline-none focus:border-primary/50 transition-colors"
-                    >
-                      <option value="">Select category...</option>
-                      {CATEGORIES.slice(1).map((c) => <option key={c} value={c}>{c}</option>)}
-                    </select>
-                  </div>
+
                 </div>
                 <button
                   onClick={() => {
@@ -181,12 +171,11 @@ export default function DeconstructLab() {
                       toast.error("Title and description are required");
                       return;
                     }
-                    submit.mutate({
-                      title: form.title,
-                      description: form.description,
-                      sourceUrl: form.sourceUrl || undefined,
-                      category: form.category || undefined,
-                    });
+        submit.mutate({
+          title: form.title,
+          description: form.description,
+          sourceUrl: form.sourceUrl || undefined,
+        });
                   }}
                   disabled={submit.isPending}
                   className="px-6 py-2.5 bg-accent text-accent-foreground font-mono tracking-widest uppercase text-xs hover:bg-accent/90 disabled:opacity-50 transition-all rounded-sm"

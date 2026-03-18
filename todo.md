@@ -40,3 +40,14 @@
 - [x] Responsive design (mobile-first)
 - [x] Profile page status comparison fixed
 - [x] Checkpoint and delivery
+
+
+## Redesign (Light Theme + Simplified Copy)
+- [x] Switch from dark theme to light theme with high contrast
+- [x] Fix grey-on-black text readability issues
+- [x] Simplify all copy to 8th-grade reading level
+- [x] Keep "drunk" analogy throughout (don't drink the punch)
+- [x] Strengthen all CTAs (replace "Verify Something Now" with punchier language)
+- [x] Add email forwarding feature (digitalpunch.refurrm@gmail.com)
+- [x] Create email verification response page
+- [x] Post verified email analysis on website

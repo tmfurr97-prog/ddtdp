@@ -24,6 +24,7 @@ vi.mock("./db", () => ({
   saveVerification: vi.fn().mockResolvedValue(undefined),
   updateUserProfile: vi.fn().mockResolvedValue(undefined),
   upsertMembership: vi.fn().mockResolvedValue(undefined),
+  getDb: vi.fn().mockResolvedValue(null),
 }));
 
 // ─── Mock LLM ─────────────────────────────────────────────────────────────────
