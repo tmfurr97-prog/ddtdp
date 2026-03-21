@@ -6,6 +6,7 @@ import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import {
+  checkIfScamSender,
   createCredibilitySearch,
   createDonation,
   createPartnerApplication,
@@ -16,6 +17,7 @@ import {
   getEmailForwardingStats,
   getFeaturedHoaxes,
   getFeaturedTestimonials,
+  getFlaggedSenders,
   getHoaxBySlug,
   getMembershipByUserId,
   getPartnerByUserId,
@@ -23,11 +25,13 @@ import {
   getRecentCredibilitySearches,
   getResourceBySlug,
   getResources,
+  getScamSenderStats,
   getUserCredibilitySearches,
   getUserEmailForwardings,
   getUserSubmissions,
   getUserVerifications,
   getVerifiedPartners,
+  reportScamSender,
   saveVerification,
   submitEmailForwarding,
   updateUserProfile,
@@ -446,6 +450,39 @@ const credibilitySearchRouter = router({
   }),
 });
 
+// ─── Scam Sender Router ─────────────────────────────────────────────────────────
+const scamSenderRouter = router({
+  check: publicProcedure
+    .input(z.object({ email: z.string().email() }))
+    .query(async ({ input }) => {
+      return await checkIfScamSender(input.email);
+    }),
+
+  report: publicProcedure
+    .input(
+      z.object({
+        email: z.string().email(),
+        scamType: z.string().optional(),
+        severity: z.enum(["low", "medium", "high", "critical"]).optional(),
+        description: z.string().max(500).optional(),
+      })
+    )
+    .mutation(async ({ input }) => {
+      await reportScamSender(input);
+      return { success: true };
+    }),
+
+  flagged: publicProcedure
+    .input(z.object({ limit: z.number().min(1).max(100).default(50) }))
+    .query(async ({ input }) => {
+      return await getFlaggedSenders(input.limit);
+    }),
+
+  stats: publicProcedure.query(async () => {
+    return await getScamSenderStats();
+  }),
+});
+
 // ─── User Router ──────────────────────────────────────────────────────────────
 const userRouter = router({
   updateProfile: protectedProcedure
@@ -477,6 +514,7 @@ export const appRouter = router({
   donations: donationsRouter,
   emailForwarding: emailForwardingRouter,
   credibilitySearch: credibilitySearchRouter,
+  scamSender: scamSenderRouter,
   user: userRouter,
 });
 

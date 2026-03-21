@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "sonner";
 import { Link } from "wouter";
 import { trpc } from "@/lib/trpc";
+import { AlertTriangle } from "lucide-react";
 
 type EmailResult = {
   verdict: string;
@@ -37,10 +38,21 @@ const EXAMPLE_EMAILS = [
 
 export default function EmailScanner() {
   const [emailText, setEmailText] = useState("");
+  const [senderEmail, setSenderEmail] = useState("");
   const [result, setResult] = useState<EmailResult | null>(null);
 
   const scan = trpc.verifications.scanEmail.useMutation({
     onSuccess: (data) => setResult(data as EmailResult),
+    onError: (err) => toast.error(err.message),
+  });
+
+  const checkScamSender = trpc.scamSender.check.useQuery(
+    { email: senderEmail },
+    { enabled: senderEmail.length > 5 && senderEmail.includes("@") }
+  );
+
+  const reportSender = trpc.scamSender.report.useMutation({
+    onSuccess: () => toast.success("Sender reported. Thanks for helping keep others safe!"),
     onError: (err) => toast.error(err.message),
   });
 
@@ -75,6 +87,37 @@ export default function EmailScanner() {
               </button>
             ))}
           </div>
+        </div>
+
+        {/* Sender Email */}
+        <div className="mb-6">
+          <label className="text-xs font-mono tracking-widest uppercase text-muted-foreground mb-2 block">
+            Sender Email Address
+          </label>
+          <input
+            type="email"
+            value={senderEmail}
+            onChange={(e) => setSenderEmail(e.target.value)}
+            placeholder="example@suspicious-domain.com"
+            className="w-full bg-card border border-border/50 rounded-sm px-4 py-2 text-sm font-mono text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-red-400/50 transition-colors"
+          />
+          {checkScamSender.data && (
+            <div className="mt-3 p-3 bg-red-950/30 border border-red-400/30 rounded-sm flex items-start gap-3">
+              <AlertTriangle className="w-4 h-4 text-red-400 mt-0.5 shrink-0" />
+              <div>
+                <div className="text-xs font-mono text-red-400 mb-1">FLAGGED SENDER</div>
+                <p className="text-sm text-red-300/80 mb-1">
+                  This sender has been reported {checkScamSender.data.reportCount} times
+                </p>
+                <p className="text-xs text-red-300/60">
+                  Type: {checkScamSender.data.scamType || "Unknown"} | Severity: {checkScamSender.data.severity}
+                </p>
+                {checkScamSender.data.description && (
+                  <p className="text-xs text-red-300/60 mt-1">{checkScamSender.data.description}</p>
+                )}
+              </div>
+            </div>
+          )}
         </div>
 
         {/* Input */}
@@ -124,19 +167,43 @@ export default function EmailScanner() {
                 </div>
                 <div className="text-right">
                   <div className="text-xs font-mono text-muted-foreground mb-1">Risk Score</div>
-                  <div className={`text-4xl font-display ${verdict.color}`}>{result.risk_score}<span className="text-xl">/100</span></div>
+                  <div className={`text-4xl font-display ${verdict.color}`}>
+                    {result.risk_score}<span className="text-xl">/100</span>
+                  </div>
                 </div>
               </div>
               <div className="h-2 bg-secondary/50 rounded-full overflow-hidden mb-4">
                 <div
-                  className={`h-full rounded-full transition-all ${result.risk_score > 60 ? "bg-red-500" : result.risk_score > 30 ? "bg-yellow-500" : "bg-green-500"}`}
+                  className={`h-full rounded-full transition-all ${
+                    result.risk_score > 60 ? "bg-red-500" : result.risk_score > 30 ? "bg-yellow-500" : "bg-green-500"
+                  }`}
                   style={{ width: `${result.risk_score}%` }}
                 />
               </div>
               {result.scam_type && (
-                <div className="text-xs font-mono text-muted-foreground">Scam Type: <span className="text-foreground">{result.scam_type}</span></div>
+                <div className="text-xs font-mono text-muted-foreground">
+                  Scam Type: <span className="text-foreground">{result.scam_type}</span>
+                </div>
               )}
             </div>
+
+            {/* Report Sender Button */}
+            {senderEmail && (
+              <button
+                onClick={() =>
+                  reportSender.mutate({
+                    email: senderEmail,
+                    scamType: result.scam_type,
+                    severity: result.risk_score > 70 ? "critical" : result.risk_score > 50 ? "high" : "medium",
+                    description: result.summary,
+                  })
+                }
+                disabled={reportSender.isPending}
+                className="w-full py-2 border border-red-400/50 text-red-400 font-mono tracking-widest uppercase text-xs hover:bg-red-400/10 disabled:opacity-50 transition-all rounded-sm"
+              >
+                {reportSender.isPending ? "Reporting..." : "Report This Sender"}
+              </button>
+            )}
 
             {/* Summary */}
             <div className="p-5 bg-card border border-border/50 rounded-sm">
@@ -158,7 +225,12 @@ export default function EmailScanner() {
                 <div className="p-4 bg-card border border-border/50 rounded-sm">
                   <div className="text-xs font-mono tracking-widest uppercase text-red-400 mb-3">Red Flags</div>
                   <ul className="space-y-1.5">
-                    {result.red_flags.map((f, i) => <li key={i} className="text-xs font-mono text-muted-foreground flex items-start gap-2"><span className="text-red-400 mt-0.5 shrink-0">▸</span>{f}</li>)}
+                    {result.red_flags.map((f, i) => (
+                      <li key={i} className="text-xs font-mono text-muted-foreground flex items-start gap-2">
+                        <span className="text-red-400 mt-0.5 shrink-0">▸</span>
+                        {f}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               )}
@@ -166,7 +238,12 @@ export default function EmailScanner() {
                 <div className="p-4 bg-card border border-border/50 rounded-sm">
                   <div className="text-xs font-mono tracking-widest uppercase text-yellow-400 mb-3">Urgency Tactics</div>
                   <ul className="space-y-1.5">
-                    {result.urgency_tactics.map((t, i) => <li key={i} className="text-xs font-mono text-muted-foreground flex items-start gap-2"><span className="text-yellow-400 mt-0.5 shrink-0">▸</span>{t}</li>)}
+                    {result.urgency_tactics.map((t, i) => (
+                      <li key={i} className="text-xs font-mono text-muted-foreground flex items-start gap-2">
+                        <span className="text-yellow-400 mt-0.5 shrink-0">▸</span>
+                        {t}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               )}
@@ -174,7 +251,12 @@ export default function EmailScanner() {
                 <div className="p-4 bg-card border border-border/50 rounded-sm">
                   <div className="text-xs font-mono tracking-widest uppercase text-orange-400 mb-3">Sender Red Flags</div>
                   <ul className="space-y-1.5">
-                    {result.sender_red_flags.map((f, i) => <li key={i} className="text-xs font-mono text-muted-foreground flex items-start gap-2"><span className="text-orange-400 mt-0.5 shrink-0">▸</span>{f}</li>)}
+                    {result.sender_red_flags.map((f, i) => (
+                      <li key={i} className="text-xs font-mono text-muted-foreground flex items-start gap-2">
+                        <span className="text-orange-400 mt-0.5 shrink-0">▸</span>
+                        {f}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               )}
@@ -182,7 +264,12 @@ export default function EmailScanner() {
                 <div className="p-4 bg-card border border-border/50 rounded-sm">
                   <div className="text-xs font-mono tracking-widest uppercase text-purple-400 mb-3">Suspicious Links</div>
                   <ul className="space-y-1.5">
-                    {result.suspicious_links.map((l, i) => <li key={i} className="text-xs font-mono text-muted-foreground break-all flex items-start gap-2"><span className="text-purple-400 mt-0.5 shrink-0">▸</span>{l}</li>)}
+                    {result.suspicious_links.map((l, i) => (
+                      <li key={i} className="text-xs font-mono text-muted-foreground break-all flex items-start gap-2">
+                        <span className="text-purple-400 mt-0.5 shrink-0">▸</span>
+                        {l}
+                      </li>
+                    ))}
                   </ul>
                 </div>
               )}

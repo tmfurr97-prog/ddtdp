@@ -181,6 +181,21 @@ export const credibilitySearches = mysqlTable("credibilitySearches", {
 export type CredibilitySearch = typeof credibilitySearches.$inferSelect;
 export type InsertCredibilitySearch = typeof credibilitySearches.$inferInsert;
 
+// ─── Scam Sender Emails (tracked malicious senders) ─────────────────────────────────────
+export const scamSenderEmails = mysqlTable("scamSenderEmails", {
+  id: int("id").autoincrement().primaryKey(),
+  email: varchar("email", { length: 320 }).notNull().unique(),
+  reportCount: int("reportCount").default(1).notNull(),
+  scamType: varchar("scamType", { length: 128 }),                // "phishing", "fake_invoice", "lottery", "romance", etc.
+  severity: mysqlEnum("severity", ["low", "medium", "high", "critical"]).default("medium").notNull(),
+  description: text("description"),                              // Why this sender is flagged
+  lastReportedAt: timestamp("lastReportedAt").defaultNow().notNull(),
+  flaggedAt: timestamp("flaggedAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type ScamSenderEmail = typeof scamSenderEmails.$inferSelect;
+export type InsertScamSenderEmail = typeof scamSenderEmails.$inferInsert;
+
 // ─── Donations ────────────────────────────────────────────────────────────────
 export const donations = mysqlTable("donations", {
   id: int("id").autoincrement().primaryKey(),

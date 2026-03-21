@@ -9,6 +9,7 @@ import {
   memberships,
   partners,
   resources,
+  scamSenderEmails,
   submissions,
   testimonials,
   users,
@@ -395,5 +396,90 @@ export async function getCredibilitySearchStats() {
     total: result[0]?.total ?? 0,
     completed: result[0]?.completed ?? 0,
     avgScore: Math.round(result[0]?.avgScore ?? 0),
+  };
+}
+
+// ─── Scam Sender Emails ───────────────────────────────────────────────────────
+export async function checkIfScamSender(email: string) {
+  const db = await getDb();
+  if (!db) return null;
+  const result = await db
+    .select()
+    .from(scamSenderEmails)
+    .where(eq(scamSenderEmails.email, email.toLowerCase()))
+    .limit(1);
+  return result.length > 0 ? result[0] : null;
+}
+
+export async function reportScamSender(data: {
+  email: string;
+  scamType?: string;
+  severity?: "low" | "medium" | "high" | "critical";
+  description?: string;
+}) {
+  const db = await getDb();
+  if (!db) return;
+  
+  const existing = await checkIfScamSender(data.email);
+  if (existing) {
+    // Increment report count
+    await db
+      .update(scamSenderEmails)
+      .set({
+        reportCount: existing.reportCount + 1,
+        lastReportedAt: new Date(),
+        severity: data.severity ?? existing.severity,
+        description: data.description ?? existing.description,
+      })
+      .where(eq(scamSenderEmails.email, data.email.toLowerCase()));
+  } else {
+    // Create new entry
+    await db.insert(scamSenderEmails).values({
+      email: data.email.toLowerCase(),
+      scamType: data.scamType,
+      severity: data.severity ?? "medium",
+      description: data.description,
+      reportCount: 1,
+    });
+  }
+}
+
+export async function getFlaggedSenders(limit = 50) {
+  const db = await getDb();
+  if (!db) return [];
+  return db
+    .select()
+    .from(scamSenderEmails)
+    .orderBy(desc(scamSenderEmails.reportCount))
+    .limit(limit);
+}
+
+export async function getFlaggedSendersByType(scamType: string, limit = 20) {
+  const db = await getDb();
+  if (!db) return [];
+  return db
+    .select()
+    .from(scamSenderEmails)
+    .where(eq(scamSenderEmails.scamType, scamType))
+    .orderBy(desc(scamSenderEmails.reportCount))
+    .limit(limit);
+}
+
+export async function getScamSenderStats() {
+  const db = await getDb();
+  if (!db) return { total: 0, critical: 0, high: 0, avgReports: 0 };
+  const result = await db
+    .select({
+      total: sql<number>`COUNT(*)`,
+      critical: sql<number>`SUM(CASE WHEN severity = 'critical' THEN 1 ELSE 0 END)`,
+      high: sql<number>`SUM(CASE WHEN severity = 'high' THEN 1 ELSE 0 END)`,
+      avgReports: sql<number>`AVG(reportCount)`,
+    })
+    .from(scamSenderEmails);
+  return {
+    total: result[0]?.total ?? 0,
+    critical: result[0]?.critical ?? 0,
+    high: result[0]?.high ?? 0,
+    avgReports: Math.round(result[0]?.avgReports ?? 0),
   };
 }

@@ -62,3 +62,14 @@
 - [x] Add credibility search link to homepage
 - [x] Write vitest tests for credibility search router
 - [x] Test search flow end-to-end
+
+
+## Sender Email Tracking & Scam Alerts
+- [x] Add scamSenderEmails table to Drizzle schema
+- [x] Create database migration for scamSenderEmails table
+- [x] Add sender email tracking router to server/routers.ts
+- [x] Update EmailScanner to show warning if sender is flagged
+- [x] Add "Report Sender" button to EmailScanner results
+- [x] Create admin dashboard to view/manage flagged senders
+- [x] Write vitest tests for sender tracking router
+- [x] Test scam alert flow end-to-end
