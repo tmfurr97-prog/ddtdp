@@ -15,6 +15,13 @@
       "when": 1773848755664,
       "tag": "0001_daily_korg",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "5",
+      "when": 1773873246173,
+      "tag": "0002_classy_captain_america",
+      "breakpoints": true
     }
   ]
 }

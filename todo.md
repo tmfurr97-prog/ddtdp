@@ -40,3 +40,14 @@
 - [x] Responsive design (mobile-first)
 - [x] Profile page status comparison fixed
 - [x] Checkpoint and delivery
+
+
+## Email Forwarding Feature
+- [x] Add emailForwardings table to Drizzle schema
+- [x] Create database migration for emailForwardings table
+- [x] Add emailForwarding router to server/routers.ts
+- [x] Create ForwardEmail page component
+- [x] Add email forwarding link to Navbar
+- [x] Add email forwarding link to EmailScanner page
+- [x] Write vitest tests for email forwarding router
+- [x] Test email submission flow end-to-end

@@ -1,6 +1,7 @@
-import { trpc } from "@/lib/trpc";
 import { useState } from "react";
 import { toast } from "sonner";
+import { Link } from "wouter";
+import { trpc } from "@/lib/trpc";
 
 type EmailResult = {
   verdict: string;
@@ -93,16 +94,23 @@ export default function EmailScanner() {
           />
         </div>
 
-        <button
-          onClick={() => {
-            if (!emailText.trim() || emailText.trim().length < 20) return toast.error("Paste the full email content");
-            scan.mutate({ emailText: emailText.trim() });
-          }}
-          disabled={scan.isPending}
-          className="w-full py-3 bg-red-500/80 hover:bg-red-500 text-white font-mono tracking-widest uppercase text-sm disabled:opacity-50 transition-all rounded-sm mb-10"
-        >
-          {scan.isPending ? "Scanning for threats..." : "Scan Email"}
-        </button>
+        <div className="flex gap-3 mb-10">
+          <button
+            onClick={() => {
+              if (!emailText.trim() || emailText.trim().length < 20) return toast.error("Paste the full email content");
+              scan.mutate({ emailText: emailText.trim() });
+            }}
+            disabled={scan.isPending}
+            className="flex-1 py-3 bg-red-500/80 hover:bg-red-500 text-white font-mono tracking-widest uppercase text-sm disabled:opacity-50 transition-all rounded-sm"
+          >
+            {scan.isPending ? "Scanning for threats..." : "Scan Email"}
+          </button>
+          <Link href="/toolkit/email/forward">
+            <button className="px-6 py-3 border border-red-400/50 text-red-400 font-mono tracking-widest uppercase text-sm hover:bg-red-400/10 transition-all rounded-sm">
+              Forward to Us
+            </button>
+          </Link>
+        </div>
 
         {/* Results */}
         {result && verdict && (

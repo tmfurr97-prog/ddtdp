@@ -2,6 +2,7 @@ import { and, desc, eq, like, or, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
   donations,
+  emailForwardings,
   hoaxes,
   InsertUser,
   memberships,
@@ -291,4 +292,50 @@ export async function getDonationStats() {
     .from(donations)
     .where(eq(donations.status, "completed"));
   return { total: result[0]?.total ?? 0, count: result[0]?.count ?? 0 };
+}
+
+// ─── Email Forwardings ────────────────────────────────────────────────────────
+export async function submitEmailForwarding(data: {
+  userId?: number | null;
+  senderEmail: string;
+  senderName?: string;
+  companyName?: string;
+  subject?: string;
+  emailBody: string;
+  suspiciousHooks?: string;
+}) {
+  const db = await getDb();
+  if (!db) return;
+  await db.insert(emailForwardings).values({
+    ...data,
+    status: "pending",
+  });
+}
+
+export async function getUserEmailForwardings(userId: number, limit = 20) {
+  const db = await getDb();
+  if (!db) return [];
+  return db
+    .select()
+    .from(emailForwardings)
+    .where(eq(emailForwardings.userId, userId))
+    .orderBy(desc(emailForwardings.submittedAt))
+    .limit(limit);
+}
+
+export async function getEmailForwardingStats() {
+  const db = await getDb();
+  if (!db) return { total: 0, pending: 0, completed: 0 };
+  const result = await db
+    .select({
+      total: sql<number>`COUNT(*)`,
+      pending: sql<number>`SUM(CASE WHEN status = 'pending' THEN 1 ELSE 0 END)`,
+      completed: sql<number>`SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END)`,
+    })
+    .from(emailForwardings);
+  return {
+    total: result[0]?.total ?? 0,
+    pending: result[0]?.pending ?? 0,
+    completed: result[0]?.completed ?? 0,
+  };
 }

@@ -143,6 +143,27 @@ export const partners = mysqlTable("partners", {
 export type Partner = typeof partners.$inferSelect;
 export type InsertPartner = typeof partners.$inferInsert;
 
+// ─── Email Forwardings (user-submitted emails for verification) ───────────────
+export const emailForwardings = mysqlTable("emailForwardings", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId"),
+  senderEmail: varchar("senderEmail", { length: 320 }).notNull(),
+  senderName: varchar("senderName", { length: 256 }),
+  companyName: varchar("companyName", { length: 256 }),
+  subject: varchar("subject", { length: 512 }),
+  emailBody: text("emailBody").notNull(),
+  suspiciousHooks: text("suspiciousHooks"),                    // JSON array of identified red flags
+  verdict: varchar("verdict", { length: 64 }),                 // "phishing", "scam", "spam", "safe", "pending"
+  analysis: text("analysis"),                                   // AI analysis result as JSON
+  status: mysqlEnum("status", ["pending", "analyzing", "completed", "archived"]).default("pending").notNull(),
+  submittedAt: timestamp("submittedAt").defaultNow().notNull(),
+  analyzedAt: timestamp("analyzedAt"),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type EmailForwarding = typeof emailForwardings.$inferSelect;
+export type InsertEmailForwarding = typeof emailForwardings.$inferInsert;
+
 // ─── Donations ────────────────────────────────────────────────────────────────
 export const donations = mysqlTable("donations", {
   id: int("id").autoincrement().primaryKey(),

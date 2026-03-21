@@ -15,6 +15,7 @@ import Premium from "./pages/Premium";
 import Partners from "./pages/Partners";
 import Donate from "./pages/Donate";
 import Profile from "./pages/Profile";
+import ForwardEmail from "./pages/ForwardEmail";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -35,6 +36,7 @@ function Router() {
       <Route path="/lab" component={DeconstructLab} />
       <Route path="/toolkit" component={VerificationToolkit} />
       <Route path="/toolkit/email" component={EmailScanner} />
+      <Route path="/toolkit/email/forward" component={ForwardEmail} />
       <Route path="/toolkit/video" component={VideoAnalyzer} />
       <Route path="/sober-up" component={SoberUp} />
       <Route path="/train-up" component={TrainUp} />

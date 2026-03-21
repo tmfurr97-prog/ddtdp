@@ -11,6 +11,7 @@ import {
   createSubmission,
   createTestimonial,
   getApprovedTestimonials,
+  getEmailForwardingStats,
   getFeaturedHoaxes,
   getFeaturedTestimonials,
   getHoaxBySlug,
@@ -19,10 +20,12 @@ import {
   getPublishedHoaxes,
   getResourceBySlug,
   getResources,
+  getUserEmailForwardings,
   getUserSubmissions,
   getUserVerifications,
   getVerifiedPartners,
   saveVerification,
+  submitEmailForwarding,
   updateUserProfile,
   upsertMembership,
 } from "./db";
@@ -342,6 +345,34 @@ const donationsRouter = router({
     }),
 });
 
+// ─── Email Forwarding Router ─────────────────────────────────────────────────
+const emailForwardingRouter = router({
+  submit: publicProcedure
+    .input(z.object({
+      senderEmail: z.string().email(),
+      senderName: z.string().max(256).optional(),
+      companyName: z.string().max(256).optional(),
+      subject: z.string().max(512).optional(),
+      emailBody: z.string().min(20),
+      suspiciousHooks: z.string().optional(),
+    }))
+    .mutation(async ({ input, ctx }) => {
+      await submitEmailForwarding({
+        userId: ctx.user?.id ?? null,
+        ...input,
+      });
+      return { success: true, message: "Email submitted for analysis. We'll review it and post findings on the site." };
+    }),
+
+  myForwardings: protectedProcedure.query(async ({ ctx }) => {
+    return await getUserEmailForwardings(ctx.user.id);
+  }),
+
+  stats: publicProcedure.query(async () => {
+    return await getEmailForwardingStats();
+  }),
+});
+
 // ─── User Router ──────────────────────────────────────────────────────────────
 const userRouter = router({
   updateProfile: protectedProcedure
@@ -371,6 +402,7 @@ export const appRouter = router({
   memberships: membershipsRouter,
   partners: partnersRouter,
   donations: donationsRouter,
+  emailForwarding: emailForwardingRouter,
   user: userRouter,
 });
 
