@@ -1,0 +1,9 @@
+{
+  "query": "CREATE TABLE `credibilitySearches` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`userId` int,\n\t`query` varchar(512) NOT NULL,\n\t`verdict` varchar(64),\n\t`credibilityScore` int,\n\t`summary` text,\n\t`sources` text,\n\t`fullAnalysis` text,\n\t`status` enum('pending','completed','archived') NOT NULL DEFAULT 'pending',\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `credibilitySearches_id` PRIMARY KEY(`id`)\n);",
+  "command": "mysql --batch --raw --column-names --default-character-set=utf8mb4 --host gateway04.us-east-1.prod.aws.tidbcloud.com --port 4000 --user 2ios4Cu6QrXgGsx.root --database 3xUiue9tuXw8UZaZ8hqjt9 --execute CREATE TABLE `credibilitySearches` (\n\t`id` int AUTO_INCREMENT NOT NULL,\n\t`userId` int,\n\t`query` varchar(512) NOT NULL,\n\t`verdict` varchar(64),\n\t`credibilityScore` int,\n\t`summary` text,\n\t`sources` text,\n\t`fullAnalysis` text,\n\t`status` enum('pending','completed','archived') NOT NULL DEFAULT 'pending',\n\t`createdAt` timestamp NOT NULL DEFAULT (now()),\n\t`updatedAt` timestamp NOT NULL DEFAULT (now()) ON UPDATE CURRENT_TIMESTAMP,\n\tCONSTRAINT `credibilitySearches_id` PRIMARY KEY(`id`)\n);",
+  "rows": [],
+  "messages": [],
+  "stdout": "",
+  "stderr": "",
+  "execution_time_ms": 447
+}

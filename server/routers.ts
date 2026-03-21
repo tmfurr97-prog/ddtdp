@@ -6,11 +6,13 @@ import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import {
+  createCredibilitySearch,
   createDonation,
   createPartnerApplication,
   createSubmission,
   createTestimonial,
   getApprovedTestimonials,
+  getCredibilitySearchStats,
   getEmailForwardingStats,
   getFeaturedHoaxes,
   getFeaturedTestimonials,
@@ -18,8 +20,10 @@ import {
   getMembershipByUserId,
   getPartnerByUserId,
   getPublishedHoaxes,
+  getRecentCredibilitySearches,
   getResourceBySlug,
   getResources,
+  getUserCredibilitySearches,
   getUserEmailForwardings,
   getUserSubmissions,
   getUserVerifications,
@@ -373,6 +377,75 @@ const emailForwardingRouter = router({
   }),
 });
 
+// ─── Credibility Search Router ─────────────────────────────────────────────────────
+const credibilitySearchRouter = router({
+  search: publicProcedure
+    .input(z.object({ query: z.string().min(3).max(512) }))
+    .mutation(async ({ input, ctx }) => {
+      const response = await invokeLLM({
+        messages: [
+          {
+            role: "system",
+            content: "You are a fact-checking expert. When given a claim, analyze it thoroughly and provide a credibility assessment. Respond in JSON format with: verdict (true/false/misleading/unverified), credibilityScore (0-100), summary (1-2 sentences), and sources (array of relevant sources if available).",
+          },
+          { role: "user", content: `Fact-check this claim: ${input.query}` },
+        ],
+        response_format: {
+          type: "json_schema",
+          json_schema: {
+            name: "credibility_check",
+            strict: true,
+            schema: {
+              type: "object",
+              properties: {
+                verdict: { type: "string", enum: ["true", "false", "misleading", "unverified"] },
+                credibilityScore: { type: "integer", minimum: 0, maximum: 100 },
+                summary: { type: "string" },
+                sources: { type: "array", items: { type: "string" } },
+                fullAnalysis: { type: "string" },
+              },
+              required: ["verdict", "credibilityScore", "summary", "sources", "fullAnalysis"],
+              additionalProperties: false,
+            },
+          },
+        },
+      });
+
+      const content = response.choices[0]?.message.content;
+      const parsed = typeof content === "string" ? JSON.parse(content) : content;
+
+      await createCredibilitySearch({
+        userId: ctx.user?.id ?? null,
+        query: input.query,
+        verdict: parsed.verdict,
+        credibilityScore: parsed.credibilityScore,
+        summary: parsed.summary,
+        sources: JSON.stringify(parsed.sources),
+        fullAnalysis: parsed.fullAnalysis,
+      });
+
+      return {
+        verdict: parsed.verdict,
+        credibilityScore: parsed.credibilityScore,
+        summary: parsed.summary,
+        sources: parsed.sources,
+        fullAnalysis: parsed.fullAnalysis,
+      };
+    }),
+
+  recent: publicProcedure.query(async () => {
+    return await getRecentCredibilitySearches(10);
+  }),
+
+  mySearches: protectedProcedure.query(async ({ ctx }) => {
+    return await getUserCredibilitySearches(ctx.user.id);
+  }),
+
+  stats: publicProcedure.query(async () => {
+    return await getCredibilitySearchStats();
+  }),
+});
+
 // ─── User Router ──────────────────────────────────────────────────────────────
 const userRouter = router({
   updateProfile: protectedProcedure
@@ -403,6 +476,7 @@ export const appRouter = router({
   partners: partnersRouter,
   donations: donationsRouter,
   emailForwarding: emailForwardingRouter,
+  credibilitySearch: credibilitySearchRouter,
   user: userRouter,
 });
 

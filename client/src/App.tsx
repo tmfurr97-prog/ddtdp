@@ -16,6 +16,7 @@ import Partners from "./pages/Partners";
 import Donate from "./pages/Donate";
 import Profile from "./pages/Profile";
 import ForwardEmail from "./pages/ForwardEmail";
+import CredibilitySearch from "./pages/CredibilitySearch";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -38,6 +39,7 @@ function Router() {
       <Route path="/toolkit/email" component={EmailScanner} />
       <Route path="/toolkit/email/forward" component={ForwardEmail} />
       <Route path="/toolkit/video" component={VideoAnalyzer} />
+      <Route path="/check" component={CredibilitySearch} />
       <Route path="/sober-up" component={SoberUp} />
       <Route path="/train-up" component={TrainUp} />
       <Route path="/premium" component={Premium} />

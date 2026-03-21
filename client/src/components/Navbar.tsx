@@ -7,6 +7,7 @@ import { Link, useLocation } from "wouter";
 const LOGO_SVG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663452175762/3xUiue9tuXw8UZaZ8hqjt9/Title_944f7b9c.svg";
 
 const NAV_LINKS = [
+  { href: "/check", label: "Check", sub: "Fact Check" },
   { href: "/lab", label: "Deconstruct Lab", sub: "Hoax Archive" },
   { href: "/toolkit", label: "Verify", sub: "AI Tools" },
   { href: "/sober-up", label: "Sober Up", sub: "Community" },

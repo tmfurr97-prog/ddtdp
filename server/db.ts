@@ -1,6 +1,7 @@
 import { and, desc, eq, like, or, sql } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
 import {
+  credibilitySearches,
   donations,
   emailForwardings,
   hoaxes,
@@ -337,5 +338,62 @@ export async function getEmailForwardingStats() {
     total: result[0]?.total ?? 0,
     pending: result[0]?.pending ?? 0,
     completed: result[0]?.completed ?? 0,
+  };
+}
+
+// ─── Credibility Searches ─────────────────────────────────────────────────────
+export async function createCredibilitySearch(data: {
+  userId?: number | null;
+  query: string;
+  verdict?: string;
+  credibilityScore?: number;
+  summary?: string;
+  sources?: string;
+  fullAnalysis?: string;
+}) {
+  const db = await getDb();
+  if (!db) return;
+  await db.insert(credibilitySearches).values({
+    ...data,
+    status: "completed",
+  });
+}
+
+export async function getUserCredibilitySearches(userId: number, limit = 20) {
+  const db = await getDb();
+  if (!db) return [];
+  return db
+    .select()
+    .from(credibilitySearches)
+    .where(eq(credibilitySearches.userId, userId))
+    .orderBy(desc(credibilitySearches.createdAt))
+    .limit(limit);
+}
+
+export async function getRecentCredibilitySearches(limit = 10) {
+  const db = await getDb();
+  if (!db) return [];
+  return db
+    .select()
+    .from(credibilitySearches)
+    .where(eq(credibilitySearches.status, "completed"))
+    .orderBy(desc(credibilitySearches.createdAt))
+    .limit(limit);
+}
+
+export async function getCredibilitySearchStats() {
+  const db = await getDb();
+  if (!db) return { total: 0, completed: 0, avgScore: 0 };
+  const result = await db
+    .select({
+      total: sql<number>`COUNT(*)`,
+      completed: sql<number>`SUM(CASE WHEN status = 'completed' THEN 1 ELSE 0 END)`,
+      avgScore: sql<number>`AVG(credibilityScore)`,
+    })
+    .from(credibilitySearches);
+  return {
+    total: result[0]?.total ?? 0,
+    completed: result[0]?.completed ?? 0,
+    avgScore: Math.round(result[0]?.avgScore ?? 0),
   };
 }

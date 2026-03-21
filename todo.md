@@ -51,3 +51,14 @@
 - [x] Add email forwarding link to EmailScanner page
 - [x] Write vitest tests for email forwarding router
 - [x] Test email submission flow end-to-end
+
+
+## Credibility Search Feature
+- [x] Add credibilitySearches table to Drizzle schema
+- [x] Create database migration for credibilitySearches table
+- [x] Add credibility search router to server/routers.ts
+- [x] Create CredibilitySearch page component with search form
+- [x] Add credibility search link to Navbar
+- [x] Add credibility search link to homepage
+- [x] Write vitest tests for credibility search router
+- [x] Test search flow end-to-end

@@ -164,6 +164,23 @@ export const emailForwardings = mysqlTable("emailForwardings", {
 export type EmailForwarding = typeof emailForwardings.$inferSelect;
 export type InsertEmailForwarding = typeof emailForwardings.$inferInsert;
 
+// ─── Credibility Searches (fact-check queries) ─────────────────────────────────────
+export const credibilitySearches = mysqlTable("credibilitySearches", {
+  id: int("id").autoincrement().primaryKey(),
+  userId: int("userId"),
+  query: varchar("query", { length: 512 }).notNull(),
+  verdict: varchar("verdict", { length: 64 }),                 // "true", "false", "misleading", "unverified"
+  credibilityScore: int("credibilityScore"),                    // 0-100 score
+  summary: text("summary"),                                     // Brief fact-check result
+  sources: text("sources"),                                     // JSON array of source URLs
+  fullAnalysis: text("fullAnalysis"),                           // Detailed analysis
+  status: mysqlEnum("status", ["pending", "completed", "archived"]).default("pending").notNull(),
+  createdAt: timestamp("createdAt").defaultNow().notNull(),
+  updatedAt: timestamp("updatedAt").defaultNow().onUpdateNow().notNull(),
+});
+export type CredibilitySearch = typeof credibilitySearches.$inferSelect;
+export type InsertCredibilitySearch = typeof credibilitySearches.$inferInsert;
+
 // ─── Donations ────────────────────────────────────────────────────────────────
 export const donations = mysqlTable("donations", {
   id: int("id").autoincrement().primaryKey(),
