@@ -73,3 +73,16 @@
 - [x] Create admin dashboard to view/manage flagged senders
 - [x] Write vitest tests for sender tracking router
 - [x] Test scam alert flow end-to-end
+
+
+## Stripe Payment Integration
+- [x] Add Stripe feature to project scaffold
+- [x] Configure Stripe API keys (publishable and secret)
+- [x] Create Premium membership checkout page
+- [x] Create donation checkout page
+- [x] Add Stripe webhook handler for payment confirmations
+- [x] Update membership table to track Stripe payment IDs
+- [x] Update donation table to track Stripe payment IDs
+- [x] Create payment success/cancel pages
+- [x] Write vitest tests for payment routers
+- [x] Test end-to-end payment flow

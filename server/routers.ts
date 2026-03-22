@@ -5,6 +5,7 @@ import { getSessionCookieOptions } from "./_core/cookies";
 import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
+import { stripeRouter } from "./stripeRouter";
 import {
   checkIfScamSender,
   createCredibilitySearch,
@@ -515,6 +516,7 @@ export const appRouter = router({
   emailForwarding: emailForwardingRouter,
   credibilitySearch: credibilitySearchRouter,
   scamSender: scamSenderRouter,
+  stripe: stripeRouter,
   user: userRouter,
 });
 
