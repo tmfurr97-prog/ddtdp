@@ -4,142 +4,115 @@ import { trpc } from "@/lib/trpc";
 import { Link } from "wouter";
 
 const LOGO_MP4 = "https://d2xsxph8kpxj0f.cloudfront.net/310519663452175762/3xUiue9tuXw8UZaZ8hqjt9/Title_f2c56a38.mp4";
-const LOGO_SVG = "https://d2xsxph8kpxj0f.cloudfront.net/310519663452175762/3xUiue9tuXw8UZaZ8hqjt9/Title_944f7b9c.svg";
 
 const CONTENT_PILLARS = [
-  {
-    href: "/lab",
-    tag: "TEAR IT UP",
-    tagline: "See how it was built.",
-    desc: "Break the lie down. Where it started. How it spread. Why it worked.",
-    cta: "Enter the Lab →",
-    accent: "text-accent",
-    border: "border-accent/20 hover:border-accent/50",
-  },
   {
     href: "/toolkit",
     tag: "VERIFY",
     tagline: "Don’t swallow the hype.",
-    desc: "Scan it. Test it. Know what you’re sharing before you spread it.",
+    desc: "The loudest lies taste the sweetest. Don’t swallow them.",
     cta: "VERIFY NOW →",
-    accent: "text-primary",
-    border: "border-primary/20 hover:border-primary/50",
+  },
+  {
+    href: "/tracker",
+    tag: "TEAR IT UP",
+    tagline: "Expose the lie.",
+    desc: "Peel the label off the story. See how the poison was made.",
+    cta: "SEE THE EVIDENCE →",
   },
   {
     href: "/sober-up",
-    tag: "STORIES",
-    tagline: "We all took a sip. Fix it.",
-    desc: "Real people. Real mistakes. Learn how it happens so it doesn’t happen again.",
-    cta: "Read Stories →",
-    accent: "text-purple-400",
-    border: "border-purple-400/20 hover:border-purple-400/50",
+    tag: "SOBER UP",
+    tagline: "Don’t get drunk on the feed.",
+    desc: "Algorithms love an angry drunk. Stay sober. Stay sharp.",
+    cta: "READ STORIES →",
   },
   {
     href: "/train-up",
-    tag: "BUILD IMMUNITY",
+    tag: "IMMUNITY",
     tagline: "Train your brain. Not your thumb.",
-    desc: "Learn the tactics before they’re used on you.",
-    cta: "UNLOCK ACCESS →",
-    accent: "text-green-400",
-    border: "border-green-400/20 hover:border-green-400/50",
+    desc: "Learn the tactics before they are used on you.",
+    cta: "BUILD IMMUNITY →",
   },
 ];
 
 const STATS = [
-  { value: "2.3B", label: "Pieces of misinformation shared daily" },
-  { value: "70%", label: "Can’t spot a deepfake" },
-  { value: "6x", label: "Spreads faster than truth" },
-  { value: "92%", label: "Never verify before sharing" },
+  { value: "2.3B", label: "Lies shared daily" },
+  { value: "70%", label: "Miss the fake" },
+  { value: "6x", label: "Faster than truth" },
+  { value: "92%", label: "Don’t verify" },
 ];
 
 export default function Home() {
   const { isAuthenticated } = useAuth();
   const { data: featuredHoaxes } = trpc.hoaxes.featured.useQuery();
-  const { data: featuredTestimonials } = trpc.testimonials.featured.useQuery();
 
   return (
-    <div>
-      {/* HERO */}
-      <section className="relative min-h-[85vh] flex flex-col items-center justify-center border-b border-border/50">
-        <div className="container text-center py-20">
+    <div className="bg-white text-black">
 
-          <div className="mb-8 flex justify-center">
-            <video src={LOGO_MP4} autoPlay loop muted playsInline className="h-32 md:h-48 w-auto" poster={LOGO_SVG} />
-          </div>
+      {/* HERO SECTION */}
+      <section className="text-center py-20 border-b">
+        <video src={LOGO_MP4} autoPlay loop muted className="h-32 mx-auto mb-6" />
 
-          <h1 className="text-6xl md:text-8xl font-display tracking-widest mb-4">
-            DON'T<br />DRINK THE<br /><span className="text-primary">DIGITAL PUNCH</span>
-          </h1>
+        <h1 className="text-6xl font-black mb-4 tracking-tighter">
+          DON'T DRINK THE DIGITAL PUNCH
+        </h1>
 
-          <p className="text-lg font-mono text-muted-foreground mb-10">
-            Lies go down easy.<br />
-            <span className="text-foreground">Truth takes grit.</span>
-          </p>
+        <p className="text-xl mb-8 uppercase tracking-widest font-light">
+          Lies go down easy. <span className="font-bold">Truth takes grit.</span>
+        </p>
 
-          <div className="flex gap-4 justify-center">
-            {!isAuthenticated ? (
-              <a href={getLoginUrl()} className="px-6 py-3 bg-primary text-primary-foreground font-mono uppercase">
-                JOIN
-              </a>
-            ) : (
-              <Link href="/toolkit" className="px-6 py-3 bg-primary text-primary-foreground font-mono uppercase">
-                VERIFY NOW
-              </Link>
-            )}
-
-            <Link href="/lab" className="px-6 py-3 border font-mono uppercase">
-              SEE THE EVIDENCE
+        <div className="flex gap-4 justify-center">
+          {!isAuthenticated ? (
+            <a href={getLoginUrl()} className="px-8 py-4 bg-black text-white font-bold hover:bg-red-600 transition-colors">
+              JOIN THE RESISTANCE
+            </a>
+          ) : (
+            <Link href="/toolkit" className="px-8 py-4 bg-black text-white font-bold hover:bg-red-600 transition-colors">
+              VERIFY NOW
             </Link>
+          )}
+
+          <Link href="/tracker" className="px-8 py-4 border-2 border-black font-bold hover:invert transition-all">
+            TEAR IT UP
+          </Link>
+        </div>
+      </section>
+
+      {/* STATS - THE COLD HARD NUMBERS */}
+      <section className="grid grid-cols-2 md:grid-cols-4 text-center py-12 bg-gray-50">
+        {STATS.map((s) => (
+          <div key={s.value} className="border-r last:border-r-0 border-gray-200">
+            <div className="text-4xl font-black">{s.value}</div>
+            <div className="text-xs uppercase font-bold text-gray-500">{s.label}</div>
           </div>
+        ))}
+      </section>
+
+      {/* CORE CONFRONTATION */}
+      <section className="text-center max-w-3xl mx-auto py-24 px-6">
+        <h2 className="text-3xl font-bold mb-8 italic">"Most people share before they think."</h2>
+        <div className="space-y-4 text-lg">
+          <p>Fake content spreads because it works.</p>
+          <p>The algorithm rewards reaction, not truth.</p>
+          <p className="text-2xl font-black uppercase underline">Don’t be part of it.</p>
         </div>
       </section>
 
-      {/* STATS */}
-      <section className="py-10 border-b">
-        <div className="grid grid-cols-2 md:grid-cols-4 text-center">
-          {STATS.map((s) => (
-            <div key={s.value}>
-              <div className="text-3xl text-primary">{s.value}</div>
-              <div className="text-xs">{s.label}</div>
-            </div>
-          ))}
-        </div>
-      </section>
-
-      {/* CORE MESSAGE */}
-      <section className="py-16 text-center max-w-3xl mx-auto">
-        <p>Most people share before they think.</p>
-        <p>Fake screenshots. Deepfakes. Manufactured outrage.</p>
-        <p>The algorithm rewards reaction, not truth.</p>
-        <p><strong>Don’t Drink the Digital Punch.</strong></p>
-      </section>
-
-      {/* PILLARS */}
-      <section className="py-20 grid md:grid-cols-2 gap-6 container">
+      {/* CONTENT PILLARS */}
+      <section className="grid md:grid-cols-2 gap-8 px-6 py-20 max-w-6xl mx-auto">
         {CONTENT_PILLARS.map((p) => (
-          <Link key={p.href} href={p.href} className="p-6 border">
-            <div className="text-xs uppercase">{p.tag}</div>
-            <h3 className="text-xl">{p.tagline}</h3>
-            <p className="text-sm">{p.desc}</p>
-            <span>{p.cta}</span>
+          <Link key={p.tag} href={p.href} className="border-4 border-black p-8 block hover:bg-black hover:text-white transition-all group">
+            <div className="text-sm font-black mb-2 opacity-50 group-hover:opacity-100">{p.tag}</div>
+            <h3 className="text-3xl font-black mb-4 uppercase">{p.tagline}</h3>
+            <p className="text-md mb-6 leading-relaxed">{p.desc}</p>
+            <span className="font-bold border-b-2 border-current">{p.cta}</span>
           </Link>
         ))}
       </section>
 
-      {/* CTA */}
-      <section className="py-20 text-center">
-        <h2 className="text-5xl">STOP SIPPING THE SCRIPT</h2>
-        <p>Sharing spreads it. Make sure it isn’t poison.</p>
-
-        <div className="flex gap-4 justify-center mt-6">
-          <Link href="/toolkit" className="px-6 py-3 bg-primary text-primary-foreground">
-            VERIFY NOW
-          </Link>
-          <Link href="/donate" className="px-6 py-3 border">
-            SUPPORT
-          </Link>
-        </div>
-      </section>
-    </div>
-  );
-}
+      {/* THE FINAL WARNING */}
+      <section className="text-center py-32 bg-black text-white">
+        <h2 className="text-5xl font-black mb-6 tracking-tighter">STOP SWALLOWING THE SCRIPT</h2>
+        <p className="text-xl max-w-xl mx-auto mb-10 opacity-80">
+          THINK BEFORE YOU PASS THE PUNCH. Sharing spreads it. Make sure it
