@@ -6,6 +6,14 @@ import { systemRouter } from "./_core/systemRouter";
 import { protectedProcedure, publicProcedure, router } from "./_core/trpc";
 import { invokeLLM } from "./_core/llm";
 import { stripeRouter } from "./stripeRouter";
+
+// Admin-only procedure
+const adminProcedure = protectedProcedure.use(({ ctx, next }) => {
+  if (ctx.user?.role !== "admin") {
+    throw new Error("Admin access required (10003)");
+  }
+  return next({ ctx });
+});
 import {
   checkIfScamSender,
   createCredibilitySearch,
@@ -37,6 +45,13 @@ import {
   submitEmailForwarding,
   updateUserProfile,
   upsertMembership,
+  getPendingEmailForwardings,
+  updateEmailForwardingVerdict,
+  getPendingCredibilitySearches,
+  updateCredibilitySearchVerdict,
+  getPendingSubmissions,
+  updateSubmissionStatus,
+  getAdminStats,
 } from "./db";
 
 // ─── Hoaxes Router ────────────────────────────────────────────────────────────
@@ -485,6 +500,56 @@ const scamSenderRouter = router({
 });
 
 // ─── User Router ──────────────────────────────────────────────────────────────
+// ─── Admin Router ─────────────────────────────────────────────────────────────
+const adminRouter = router({
+  stats: adminProcedure.query(async () => getAdminStats()),
+  
+  emailForwardings: router({
+    pending: adminProcedure.query(async () => getPendingEmailForwardings()),
+    updateVerdict: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        verdict: z.string(),
+        analysis: z.string(),
+        status: z.enum(["completed", "archived"]),
+      }))
+      .mutation(async ({ input }) => {
+        await updateEmailForwardingVerdict(input.id, input);
+        return { success: true };
+      }),
+  }),
+  
+  credibilitySearches: router({
+    pending: adminProcedure.query(async () => getPendingCredibilitySearches()),
+    updateVerdict: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        verdict: z.string(),
+        credibilityScore: z.number().min(0).max(100),
+        summary: z.string(),
+        sources: z.string(),
+        fullAnalysis: z.string(),
+        status: z.enum(["completed", "archived"]),
+      }))
+      .mutation(async ({ input }) => {
+        await updateCredibilitySearchVerdict(input.id, input);
+        return { success: true };
+      }),
+  }),
+  
+  submissions: router({
+    pending: adminProcedure.query(async () => getPendingSubmissions()),
+    updateStatus: adminProcedure
+      .input(z.object({
+        id: z.number(),
+        status: z.enum(["reviewing", "accepted", "rejected"]),
+      }))
+      .mutation(async ({ input }) => {
+        await updateSubmissionStatus(input.id, input.status);
+        return { success: true };
+      }),
+  }),
+});
 const userRouter = router({
   updateProfile: protectedProcedure
     .input(z.object({ name: z.string().min(1).optional(), bio: z.string().max(500).optional() }))
@@ -517,6 +582,7 @@ export const appRouter = router({
   credibilitySearch: credibilitySearchRouter,
   scamSender: scamSenderRouter,
   stripe: stripeRouter,
+  admin: adminRouter,
   user: userRouter,
 });
 

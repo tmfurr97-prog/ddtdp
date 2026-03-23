@@ -483,3 +483,104 @@ export async function getScamSenderStats() {
     avgReports: Math.round(result[0]?.avgReports ?? 0),
   };
 }
+
+
+// ─── Admin Review Helpers ─────────────────────────────────────────────────────
+export async function getPendingEmailForwardings(limit = 50) {
+  const db = await getDb();
+  if (!db) return [];
+  return db
+    .select()
+    .from(emailForwardings)
+    .where(eq(emailForwardings.status, "pending"))
+    .limit(limit);
+}
+
+export async function updateEmailForwardingVerdict(id: number, data: {
+  verdict: string;
+  analysis: string;
+  status: "completed" | "archived";
+}) {
+  const db = await getDb();
+  if (!db) return;
+  await db
+    .update(emailForwardings)
+    .set({
+      verdict: data.verdict,
+      analysis: data.analysis,
+      status: data.status,
+      analyzedAt: new Date(),
+    })
+    .where(eq(emailForwardings.id, id));
+}
+
+export async function getPendingCredibilitySearches(limit = 50) {
+  const db = await getDb();
+  if (!db) return [];
+  return db
+    .select()
+    .from(credibilitySearches)
+    .where(eq(credibilitySearches.status, "pending"))
+    .limit(limit);
+}
+
+export async function updateCredibilitySearchVerdict(id: number, data: {
+  verdict: string;
+  credibilityScore: number;
+  summary: string;
+  sources: string;
+  fullAnalysis: string;
+  status: "completed" | "archived";
+}) {
+  const db = await getDb();
+  if (!db) return;
+  await db
+    .update(credibilitySearches)
+    .set({
+      verdict: data.verdict,
+      credibilityScore: data.credibilityScore,
+      summary: data.summary,
+      sources: data.sources,
+      fullAnalysis: data.fullAnalysis,
+      status: data.status,
+    })
+    .where(eq(credibilitySearches.id, id));
+}
+
+export async function getPendingSubmissions(limit = 50) {
+  const db = await getDb();
+  if (!db) return [];
+  return db
+    .select()
+    .from(submissions)
+    .where(eq(submissions.status, "pending"))
+    .limit(limit);
+}
+
+export async function updateSubmissionStatus(id: number, status: "reviewing" | "accepted" | "rejected") {
+  const db = await getDb();
+  if (!db) return;
+  await db
+    .update(submissions)
+    .set({ status })
+    .where(eq(submissions.id, id));
+}
+
+export async function getAdminStats() {
+  const db = await getDb();
+  if (!db) return null;
+
+  const [pendingEmails, pendingSearches, pendingSubmissions, flaggedSenders] = await Promise.all([
+    db.select({ count: sql<number>`COUNT(*)` }).from(emailForwardings).where(eq(emailForwardings.status, "pending")),
+    db.select({ count: sql<number>`COUNT(*)` }).from(credibilitySearches).where(eq(credibilitySearches.status, "pending")),
+    db.select({ count: sql<number>`COUNT(*)` }).from(submissions).where(eq(submissions.status, "pending")),
+    db.select({ count: sql<number>`COUNT(*)` }).from(scamSenderEmails),
+  ]);
+
+  return {
+    pendingEmails: pendingEmails[0]?.count ?? 0,
+    pendingSearches: pendingSearches[0]?.count ?? 0,
+    pendingSubmissions: pendingSubmissions[0]?.count ?? 0,
+    flaggedSenders: flaggedSenders[0]?.count ?? 0,
+  };
+}

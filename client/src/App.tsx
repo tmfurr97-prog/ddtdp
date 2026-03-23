@@ -17,6 +17,7 @@ import Donate from "./pages/Donate";
 import Profile from "./pages/Profile";
 import ForwardEmail from "./pages/ForwardEmail";
 import CredibilitySearch from "./pages/CredibilitySearch";
+import AdminDashboard from "./pages/AdminDashboard";
 import Navbar from "./components/Navbar";
 import Footer from "./components/Footer";
 
@@ -46,6 +47,7 @@ function Router() {
       <Route path="/partners" component={Partners} />
       <Route path="/donate" component={Donate} />
       <Route path="/profile" component={Profile} />
+      <Route path="/admin" component={AdminDashboard} />
       <Route path="/404" component={NotFound} />
       <Route component={NotFound} />
     </Switch>

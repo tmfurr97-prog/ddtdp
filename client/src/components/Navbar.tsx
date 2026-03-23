@@ -82,6 +82,14 @@ export default function Navbar() {
             </Link>
             {isAuthenticated ? (
               <div className="flex items-center gap-2">
+                {user?.role === "admin" && (
+                  <Link
+                    href="/admin"
+                    className="px-3 py-1.5 text-xs font-mono text-amber-500 hover:text-amber-400 transition-colors no-underline font-bold"
+                  >
+                    ADMIN
+                  </Link>
+                )}
                 <Link
                   href="/profile"
                   className="px-3 py-1.5 text-xs font-mono text-muted-foreground hover:text-foreground transition-colors no-underline"

@@ -43,6 +43,7 @@
 
 
 ## Email Forwarding Feature
+<<<<<<< Updated upstream
 - [ ] Add emailForwardings table to Drizzle schema
 - [ ] Create database migration for emailForwardings table
 - [ ] Add emailForwarding router to server/routers.ts
@@ -51,3 +52,62 @@
 - [ ] Add email forwarding link to EmailScanner page
 - [ ] Write vitest tests for email forwarding router
 - [ ] Test email submission flow end-to-end
+=======
+- [x] Add emailForwardings table to Drizzle schema
+- [x] Create database migration for emailForwardings table
+- [x] Add emailForwarding router to server/routers.ts
+- [x] Create ForwardEmail page component
+- [x] Add email forwarding link to Navbar
+- [x] Add email forwarding link to EmailScanner page
+- [x] Write vitest tests for email forwarding router
+- [x] Test email submission flow end-to-end
+
+
+## Credibility Search Feature
+- [x] Add credibilitySearches table to Drizzle schema
+- [x] Create database migration for credibilitySearches table
+- [x] Add credibility search router to server/routers.ts
+- [x] Create CredibilitySearch page component with search form
+- [x] Add credibility search link to Navbar
+- [x] Add credibility search link to homepage
+- [x] Write vitest tests for credibility search router
+- [x] Test search flow end-to-end
+
+
+## Sender Email Tracking & Scam Alerts
+- [x] Add scamSenderEmails table to Drizzle schema
+- [x] Create database migration for scamSenderEmails table
+- [x] Add sender email tracking router to server/routers.ts
+- [x] Update EmailScanner to show warning if sender is flagged
+- [x] Add "Report Sender" button to EmailScanner results
+- [x] Create admin dashboard to view/manage flagged senders
+- [x] Write vitest tests for sender tracking router
+- [x] Test scam alert flow end-to-end
+
+
+## Stripe Payment Integration
+- [x] Add Stripe feature to project scaffold
+- [x] Configure Stripe API keys (publishable and secret)
+- [x] Create Premium membership checkout page
+- [x] Create donation checkout page
+- [x] Add Stripe webhook handler for payment confirmations
+- [x] Update membership table to track Stripe payment IDs
+- [x] Update donation table to track Stripe payment IDs
+- [x] Create payment success/cancel pages
+- [x] Write vitest tests for payment routers
+- [x] Test end-to-end payment flow
+
+
+## Admin Dashboard
+- [x] Add admin query helpers to server/db.ts
+- [x] Create admin review routers in server/routers.ts
+- [x] Create AdminDashboard page component
+- [x] Build email review panel with verdict form
+- [x] Build credibility search review panel
+- [x] Build hoax submission review panel
+- [x] Build flagged sender management panel
+- [x] Add admin-only route protection
+- [x] Add admin link to navigation
+- [x] Write vitest tests for admin routers
+- [x] Test admin dashboard end-to-end
+>>>>>>> Stashed changes
