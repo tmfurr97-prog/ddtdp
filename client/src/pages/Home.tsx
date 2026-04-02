@@ -73,9 +73,17 @@ export default function Home() {
           </h1>
 
           {/* Subheading */}
-          <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto leading-relaxed">
-            A media literacy verification hub. Identify. Deconstruct. Resist misinformation before it spreads.
-          </p>
+          <div className="max-w-3xl mx-auto space-y-4">
+            <p className="text-lg md:text-xl text-foreground leading-relaxed font-semibold">
+              AI didn't invent lying. It just made it scalable.
+            </p>
+            <p className="text-base md:text-lg text-muted-foreground leading-relaxed">
+              Right now, bad actors are using it to flood your feed with fake photos, deepfakes, and fabricated stories that look 100% real. You can't trust what you see anymore.
+            </p>
+            <p className="text-base md:text-lg text-foreground leading-relaxed font-semibold">
+              If you aren't verifying your sources, you're being played.
+            </p>
+          </div>
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 justify-center pt-4">
