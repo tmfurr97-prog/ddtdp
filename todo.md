@@ -43,16 +43,6 @@
 
 
 ## Email Forwarding Feature
-<<<<<<< Updated upstream
-- [ ] Add emailForwardings table to Drizzle schema
-- [ ] Create database migration for emailForwardings table
-- [ ] Add emailForwarding router to server/routers.ts
-- [ ] Create ForwardEmail page component
-- [ ] Add email forwarding link to Navbar
-- [ ] Add email forwarding link to EmailScanner page
-- [ ] Write vitest tests for email forwarding router
-- [ ] Test email submission flow end-to-end
-=======
 - [x] Add emailForwardings table to Drizzle schema
 - [x] Create database migration for emailForwardings table
 - [x] Add emailForwarding router to server/routers.ts
@@ -110,4 +100,11 @@
 - [x] Add admin link to navigation
 - [x] Write vitest tests for admin routers
 - [x] Test admin dashboard end-to-end
->>>>>>> Stashed changes
+
+## Deconstruct Lab Seeded Content
+- [x] Create seed script with 8 real-world hoax examples
+- [x] Populate database with phishing scams (Amazon, IRS, PayPal, Microsoft, Bank of America, LinkedIn)
+- [x] Populate database with deepfakes (Tom Hanks crypto, Elon Musk stock giveaway)
+- [x] Verify Deconstruct Lab displays all seeded content
+- [x] Test hoax detail pages render correctly
+- [x] Verify all 64 tests passing
