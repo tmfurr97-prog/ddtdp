@@ -108,3 +108,12 @@
 - [x] Verify Deconstruct Lab displays all seeded content
 - [x] Test hoax detail pages render correctly
 - [x] Verify all 64 tests passing
+
+## Typography Standardization
+- [x] Audit current font usage across all pages
+- [x] Update global CSS with standardized font stack (Space Grotesk for body, Bebas Neue removed from h1-h6)
+- [x] Add font weight definitions for all heading levels (h1-h6)
+- [x] Add letter-spacing and line-height standards for readability
+- [x] Enable font smoothing for better definition (-webkit-font-smoothing, -moz-osx-font-smoothing)
+- [x] Verify typography consistency across homepage, toolkit, and other pages
+- [x] Test all 64 tests still passing after CSS changes
