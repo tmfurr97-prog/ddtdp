@@ -117,3 +117,11 @@
 - [x] Enable font smoothing for better definition (-webkit-font-smoothing, -moz-osx-font-smoothing)
 - [x] Verify typography consistency across homepage, toolkit, and other pages
 - [x] Test all 64 tests still passing after CSS changes
+
+## Button & Link Typography Refinement
+- [x] Audit current button and link styles across pages
+- [x] Update button base styles with consistent font-weight (700)
+- [x] Add letter-spacing to buttons for better definition (0.02em)
+- [x] Standardize link typography with font-weight (600) and text-decoration
+- [x] Test button and link consistency on all pages
+- [x] Verify all 64 tests still passing after changes
