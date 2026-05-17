@@ -108,7 +108,7 @@ export default function TrainUp() {
                         <span className="text-xs font-mono text-primary border border-primary/30 px-2 py-0.5 rounded-sm">PREMIUM</span>
                       )}
                     </div>
-                    <h3 className={`text-lg font-display tracking-wide text-foreground mb-2 group-hover:${section.color.replace("text-", "text-")} transition-colors`}>
+                    <h3 className={`text-lg font-display tracking-wide text-foreground mb-2 group-hover:${section.color} transition-colors`}>
                       {module.title}
                     </h3>
                     <p className="text-xs font-mono text-muted-foreground leading-relaxed mb-4">{module.desc}</p>
