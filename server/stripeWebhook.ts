@@ -18,7 +18,7 @@ stripeRouter.post('/webhook', express.raw({ type: 'application/json' }), async (
     event = stripe.webhooks.constructEvent(req.body, sig, env.STRIPE_WEBHOOK_SECRET);
   } catch (err: any) {
     console.error(`❌ Webhook Error: ${err.message}`);
-    return res.status(400).send(`Webhook Error: ${err.message}`);
+    return res.status(400).send('Webhook Error');
   }
 
   // Handle the event types securely
